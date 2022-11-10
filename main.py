@@ -13,3 +13,7 @@ data.head()
 data = np.array(data)
 
 # %%
+m, n = data.shape
+np.random.shuffle(data)  # avoid overfitting
+
+# %%
