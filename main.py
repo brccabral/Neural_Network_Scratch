@@ -180,14 +180,26 @@ def test_prediction(
 test = pd.read_csv("./mnist/mnist_test.csv")
 test = np.array(test)
 data_test = test.T  # transpose to make math easier
-Y_test = data_test[0]
-X_test = data_test[1:n]
-X_test = X_test / 255.0
+Y_test: np.ndarray = data_test[0]
+X_test: np.ndarray = data_test[1:n]
+X_test: np.ndarray = X_test / 255.0
 
 # %%
 test_prediction(0, X_test, Y_test, W1, b1, W2, b2)
 test_prediction(1, X_test, Y_test, W1, b1, W2, b2)
 test_prediction(2, X_test, Y_test, W1, b1, W2, b2)
 test_prediction(3, X_test, Y_test, W1, b1, W2, b2)
+
+# %%
+test_prediction(int(np.random.rand() * Y_test.size), X_test, Y_test, W1, b1, W2, b2)
+
+# %%
+correct = 0
+for index in range(Y_test.size):
+    prediction = make_predictions(X_test[:, index, None], W1, b1, W2, b2)
+    label = Y_test[index]
+    if prediction[0] == label:
+        correct += 1
+print(f"Test performance: {correct/Y_test.size:.2f}")
 
 # %%
