@@ -45,3 +45,16 @@ def ReLU(Z: np.ndarray) -> np.ndarray:
 # %%
 def softmax(Z: np.array) -> np.array:
     return np.exp(Z) / np.sum(np.exp(Z))
+
+
+# %%
+def forward_prop(
+    W1: np.ndarray, b1: np.ndarray, W2: np.ndarray, b2: np.ndarray, X: np.ndarray
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    Z1 = W1.dot(X) + b1
+    A1 = ReLU(Z1)
+    Z2 = W2.dot(A1) + b2
+    A2 = softmax(Z2)
+    return Z1, A1, Z2, A2
+
+# %%
