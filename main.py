@@ -111,4 +111,7 @@ def update_params(
     b2 = b2 - alpha * db2
     return W1, b1, W2, b2
 
+
 # %%
+def get_predictions(A2) -> np.ndarray:
+    return np.argmax(A2, 0)
