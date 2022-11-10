@@ -145,4 +145,10 @@ def gradient_descent(
 # %%
 W1, b1, W2, b2 = gradient_descent(X_train, Y_train, 500, 0.1)
 
+
 # %%
+def make_predictions(
+    X: np.ndarray, W1: np.ndarray, b1: np.ndarray, W2: np.ndarray, b2: np.ndarray
+) -> np.ndarray:
+    _, _, _, A2 = forward_prop(W1, b1, W2, b2, X)
+    return get_predictions(A2)
