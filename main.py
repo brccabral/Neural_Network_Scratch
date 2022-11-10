@@ -152,3 +152,42 @@ def make_predictions(
 ) -> np.ndarray:
     _, _, _, A2 = forward_prop(W1, b1, W2, b2, X)
     return get_predictions(A2)
+
+
+# %%%
+def test_prediction(
+    index: int,
+    X: np.ndarray,
+    Y: np.ndarray,
+    W1: np.ndarray,
+    b1: np.ndarray,
+    W2: np.ndarray,
+    b2: np.ndarray,
+):
+    current_image = X[:, index, None]
+    prediction = make_predictions(X[:, index, None], W1, b1, W2, b2)
+    label = Y[index]
+    print("Prediction: ", prediction)
+    print("Label: ", label)
+
+    current_image = current_image.reshape((28, 28)) * 255
+    plt.gray()
+    plt.imshow(current_image, interpolation="nearest")
+    plt.show()
+
+
+# %%
+test = pd.read_csv("./mnist/mnist_test.csv")
+test = np.array(test)
+data_test = test.T  # transpose to make math easier
+Y_test = data_test[0]
+X_test = data_test[1:n]
+X_test = X_test / 255.0
+
+# %%
+test_prediction(0, X_test, Y_test, W1, b1, W2, b2)
+test_prediction(1, X_test, Y_test, W1, b1, W2, b2)
+test_prediction(2, X_test, Y_test, W1, b1, W2, b2)
+test_prediction(3, X_test, Y_test, W1, b1, W2, b2)
+
+# %%
