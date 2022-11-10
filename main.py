@@ -57,4 +57,11 @@ def forward_prop(
     A2 = softmax(Z2)
     return Z1, A1, Z2, A2
 
+
 # %%
+def one_hot(Y: np.ndarray) -> np.ndarray:
+    one_hot_Y = np.zeros((Y.size, Y.max() + 1))  # create matrix with correct size
+    # np.arange(Y.size) - will return a list from 0 to Y.size
+    # Y - will contain the column index to set the value of 1
+    one_hot_Y[np.arange(Y.size), Y] = 1
+    return one_hot_Y.T  # transpose
