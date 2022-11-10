@@ -91,3 +91,24 @@ def back_prop(
     dW1 = 1 / m * dZ1.dot(X.T)
     db1 = 1 / m * np.sum(dZ1, 2)
     return dW1, db1, dW2, db2
+
+
+# %%
+def update_params(
+    W1: np.ndarray,
+    b1: np.ndarray,
+    W2: np.ndarray,
+    b2: np.ndarray,
+    dW1: np.ndarray,
+    db1: np.ndarray,
+    dW2: np.ndarray,
+    db2: np.ndarray,
+    alpha: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    W1 = W1 - alpha * dW1
+    b1 = b1 - alpha * db1
+    W2 = W2 - alpha * dW2
+    b2 = b2 - alpha * db2
+    return W1, b1, W2, b2
+
+# %%
