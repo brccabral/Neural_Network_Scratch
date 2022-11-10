@@ -20,31 +20,33 @@ np.random.shuffle(data)  # avoid overfitting
 data_dev = data[0:1000].T  # transpose to make math easier
 Y_dev = data_dev[0]
 X_dev = data_dev[1:n]
+X_dev = X_dev / 255.0
 
 # %%
-data_train = data[1000:].T  # transpose to make math easier
+data_train = data[1000:m].T  # transpose to make math easier
 Y_train = data_train[0]
 X_train = data_train[1:n]
+X_train = X_train / 255.0
 
 
 # %%
 def init_params() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Generate weights and biases"""
-    W1 = np.random.randn(10, 784) - 0.5
-    b1 = np.random.randn(10, 1) - 0.5
-    W2 = np.random.randn(10, 10) - 0.5
-    b2 = np.random.randn(10, 1) - 0.5
+    W1 = np.random.rand(10, 784) - 0.5
+    b1 = np.random.rand(10, 1) - 0.5
+    W2 = np.random.rand(10, 10) - 0.5
+    b2 = np.random.rand(10, 1) - 0.5
     return W1, b1, W2, b2
 
 
 # %%
 def ReLU(Z: np.ndarray) -> np.ndarray:
-    return np.maximum(0, Z)
+    return np.maximum(Z, 0)
 
 
 # %%
 def softmax(Z: np.array) -> np.array:
-    return np.exp(Z) / np.sum(np.exp(Z))
+    return np.exp(Z) / sum(np.exp(Z))
 
 
 # %%
@@ -86,10 +88,10 @@ def back_prop(
     one_hot_Y = one_hot(Y)
     dZ2 = A2 - one_hot_Y
     dW2 = 1 / m * dZ2.dot(A1.T)
-    db2 = 1 / m * np.sum(dZ2, 2)
+    db2 = 1 / m * np.sum(dZ2)
     dZ1: np.ndarray = W2.T.dot(dZ2) * deriv_ReLU(Z1)
     dW1 = 1 / m * dZ1.dot(X.T)
-    db1 = 1 / m * np.sum(dZ1, 2)
+    db1 = 1 / m * np.sum(dZ1)
     return dW1, db1, dW2, db2
 
 
@@ -103,7 +105,7 @@ def update_params(
     db1: np.ndarray,
     dW2: np.ndarray,
     db2: np.ndarray,
-    alpha: np.ndarray,
+    alpha: float,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     W1 = W1 - alpha * dW1
     b1 = b1 - alpha * db1
@@ -119,13 +121,13 @@ def get_predictions(A2: np.ndarray) -> np.ndarray:
 
 # %%
 def get_accuracy(predictions: np.ndarray, Y: np.ndarray) -> float:
-    print(predictions, Y)
+    # print(predictions, Y)
     return np.sum(predictions == Y) / Y.size
 
 
 # %%
 def gradient_descent(
-    X: np.ndarray, Y: np.ndarray, iterations: np.ndarray, alpha: np.ndarray
+    X: np.ndarray, Y: np.ndarray, iterations: np.ndarray, alpha: float
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     W1, b1, W2, b2 = init_params()
     for i in range(iterations):
@@ -135,4 +137,12 @@ def gradient_descent(
         if i % 50 == 0:
             print(f"Iteration: {i}")
             print(f"Accuracy: {get_accuracy(get_predictions(A2), Y)}")
+    print(f"Iteration: {i}")
+    print(f"Accuracy: {get_accuracy(get_predictions(A2), Y)}")
     return W1, b1, W2, b2
+
+
+# %%
+W1, b1, W2, b2 = gradient_descent(X_train, Y_train, 500, 0.1)
+
+# %%
