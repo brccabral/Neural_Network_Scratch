@@ -65,3 +65,8 @@ def one_hot(Y: np.ndarray) -> np.ndarray:
     # Y - will contain the column index to set the value of 1
     one_hot_Y[np.arange(Y.size), Y] = 1
     return one_hot_Y.T  # transpose
+
+
+# %%
+def deriv_ReLU(Z: np.ndarray) -> np.ndarray:
+    return Z > 0
