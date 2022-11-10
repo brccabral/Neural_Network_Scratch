@@ -115,3 +115,9 @@ def update_params(
 # %%
 def get_predictions(A2) -> np.ndarray:
     return np.argmax(A2, 0)
+
+
+# %%
+def get_accuracy(predictions, Y) -> float:
+    print(predictions, Y)
+    return np.sum(predictions == Y) / Y.size
