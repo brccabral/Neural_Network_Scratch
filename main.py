@@ -70,3 +70,24 @@ def one_hot(Y: np.ndarray) -> np.ndarray:
 # %%
 def deriv_ReLU(Z: np.ndarray) -> np.ndarray:
     return Z > 0
+
+
+# %%
+def back_prop(
+    Z1: np.ndarray,
+    A1: np.ndarray,
+    Z2: np.ndarray,
+    A2: np.ndarray,
+    W2: np.ndarray,
+    X: np.ndarray,
+    Y: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    m = Y.size
+    one_hot_Y = one_hot(Y)
+    dZ2 = A2 - one_hot_Y
+    dW2 = 1 / m * dZ2.dot(A1.T)
+    db2 = 1 / m * np.sum(dZ2, 2)
+    dZ1: np.ndarray = W2.T.dot(dZ2) * deriv_ReLU(Z1)
+    dW1 = 1 / m * dZ1.dot(X.T)
+    db1 = 1 / m * np.sum(dZ1, 2)
+    return dW1, db1, dW2, db2
