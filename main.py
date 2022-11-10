@@ -40,3 +40,8 @@ def init_params() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 # %%
 def ReLU(Z: np.ndarray) -> np.ndarray:
     return np.maximum(0, Z)
+
+
+# %%
+def softmax(Z: np.array) -> np.array:
+    return np.exp(Z) / np.sum(np.exp(Z))
