@@ -17,13 +17,14 @@ m, n = data.shape
 np.random.shuffle(data)  # avoid overfitting
 
 # %%
-data_dev = data[0:1000].T  # transpose to make math easier
-Y_dev = data_dev[0]
-X_dev = data_dev[1:n]
-X_dev = X_dev / 255.0
+# data_dev = data[0:1000].T  # transpose to make math easier
+# Y_dev = data_dev[0]
+# X_dev = data_dev[1:n]
+# X_dev = X_dev / 255.0
 
 # %%
-data_train = data[1000:m].T  # transpose to make math easier
+# data_train = data[1000:m].T  # transpose to make math easier
+data_train = data.T  # transpose to make math easier
 Y_train = data_train[0]
 X_train = data_train[1:n]
 X_train = X_train / 255.0
@@ -194,12 +195,7 @@ test_prediction(3, X_test, Y_test, W1, b1, W2, b2)
 test_prediction(int(np.random.rand() * Y_test.size), X_test, Y_test, W1, b1, W2, b2)
 
 # %%
-correct = 0
-for index in range(Y_test.size):
-    prediction = make_predictions(X_test[:, index, None], W1, b1, W2, b2)
-    label = Y_test[index]
-    if prediction[0] == label:
-        correct += 1
-print(f"Test performance: {correct/Y_test.size:.2f}")
+test_predictions = make_predictions(X_test, W1, b1, W2, b2)
+get_accuracy(test_predictions, Y_test)
 
 # %%
