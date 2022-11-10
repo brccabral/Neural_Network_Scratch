@@ -28,10 +28,15 @@ X_train = data_train[1:n]
 
 
 # %%
-def init_params():
-    '''Generate weights and biases'''
+def init_params() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Generate weights and biases"""
     W1 = np.random.randn(10, 784) - 0.5
     b1 = np.random.randn(10, 1) - 0.5
     W2 = np.random.randn(10, 10) - 0.5
     b2 = np.random.randn(10, 1) - 0.5
     return W1, b1, W2, b2
+
+
+# %%
+def ReLU(Z: np.ndarray) -> np.ndarray:
+    return np.maximum(0, Z)
