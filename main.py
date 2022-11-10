@@ -113,11 +113,26 @@ def update_params(
 
 
 # %%
-def get_predictions(A2) -> np.ndarray:
+def get_predictions(A2: np.ndarray) -> np.ndarray:
     return np.argmax(A2, 0)
 
 
 # %%
-def get_accuracy(predictions, Y) -> float:
+def get_accuracy(predictions: np.ndarray, Y: np.ndarray) -> float:
     print(predictions, Y)
     return np.sum(predictions == Y) / Y.size
+
+
+# %%
+def gradient_descent(
+    X: np.ndarray, Y: np.ndarray, iterations: np.ndarray, alpha: np.ndarray
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    W1, b1, W2, b2 = init_params()
+    for i in range(iterations):
+        Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
+        dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W2, X, Y)
+        W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
+        if i % 50 == 0:
+            print(f"Iteration: {i}")
+            print(f"Accuracy: {get_accuracy(get_predictions(A2), Y)}")
+    return W1, b1, W2, b2
