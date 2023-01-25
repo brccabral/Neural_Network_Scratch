@@ -85,9 +85,9 @@ def back_prop(
     W2: np.ndarray,
     X: np.ndarray,
     Y: np.ndarray,
+    one_hot_Y: np.ndarray,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     m = Y.size
-    one_hot_Y = one_hot(Y)
     dZ2 = A2 - one_hot_Y
     dW2 = 1 / m * dZ2.dot(A1.T)
     db2 = 1 / m * np.sum(dZ2)
@@ -132,9 +132,10 @@ def gradient_descent(
     X: np.ndarray, Y: np.ndarray, iterations: np.ndarray, alpha: float
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     W1, b1, W2, b2 = init_params()
+    one_hot_Y = one_hot(Y)
     for i in range(iterations):
         Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
-        dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W2, X, Y)
+        dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W2, X, Y, one_hot_Y)
         W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
         if i % 50 == 0:
             print(f"Generation: {i}\tAccuracy: {get_accuracy(get_predictions(A2), Y)}")
