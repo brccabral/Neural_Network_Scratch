@@ -24,6 +24,7 @@ np.random.shuffle(data)  # avoid overfitting
 
 # %%
 # data_train = data[1000:m].T  # transpose to make math easier
+# data = data[:15][:]
 data_train = data.T  # transpose to make math easier
 Y_train = data_train[0]
 X_train = data_train[1:n]
@@ -46,7 +47,7 @@ def ReLU(Z: np.ndarray) -> np.ndarray:
 
 
 # %%
-def softmax(Z: np.array) -> np.array:
+def softmax(Z: np.array) -> np.ndarray:
     return np.exp(Z) / sum(np.exp(Z))
 
 
@@ -54,7 +55,7 @@ def softmax(Z: np.array) -> np.array:
 def forward_prop(
     W1: np.ndarray, b1: np.ndarray, W2: np.ndarray, b2: np.ndarray, X: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    Z1 = W1.dot(X) + b1
+    Z1 = W1.dot(X) + b1  # W1 10,784 ||| X 784,60000 ||| W.X 10,60000
     A1 = ReLU(Z1)
     Z2 = W2.dot(A1) + b2
     A2 = softmax(Z2)
@@ -136,10 +137,8 @@ def gradient_descent(
         dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W2, X, Y)
         W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
         if i % 50 == 0:
-            print(f"Iteration: {i}")
-            print(f"Accuracy: {get_accuracy(get_predictions(A2), Y)}")
-    print(f"Iteration: {i}")
-    print(f"Accuracy: {get_accuracy(get_predictions(A2), Y)}")
+            print(f"Generation: {i}\tAccuracy: {get_accuracy(get_predictions(A2), Y)}")
+    print(f"Final\tAccuracy: {get_accuracy(get_predictions(A2), Y)}")
     return W1, b1, W2, b2
 
 
@@ -168,8 +167,7 @@ def test_prediction(
     current_image = X[:, index, None]
     prediction = make_predictions(X[:, index, None], W1, b1, W2, b2)
     label = Y[index]
-    print("Prediction: ", prediction)
-    print("Label: ", label)
+    print(f"Prediction: {prediction[0]}\tLabel: {label}")
 
     current_image = current_image.reshape((28, 28)) * 255
     plt.gray()
